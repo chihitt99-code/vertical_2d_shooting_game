@@ -6,7 +6,6 @@ using UnityEngine.Playables;
 
 public class Player : MonoBehaviour
 {
-    public GameObject boomPrefab;
     public GameObject playerBulletPrefab;
     public Transform firePoint;
     
@@ -19,7 +18,7 @@ public class Player : MonoBehaviour
     public int life = 3;
     private float delta = 0;
     private float span = 0.1f;
-    private int boom;
+    public int boom;
     private int power;
     private bool isInvincibility = false;
    
@@ -28,7 +27,8 @@ public class Player : MonoBehaviour
     public Action onResetPosition;
     public Action onGameOver;
     public Action onBoom;
-
+    public Action onGetBoomItem;
+    
     public bool isBoom = false;
     
 
@@ -45,6 +45,25 @@ public class Player : MonoBehaviour
         Reload();
     }
 
+    private void Boom()
+    {
+        if (!Input.GetButton("Fire2"))
+            return;
+        
+        if (isBoom)
+            return;
+        
+        if (boom <=  0)
+        {
+            return;
+        }
+        
+        isBoom = true;
+        this.boom--;
+        
+        onBoom();
+
+    }
     private void Reload()
     {
         delta += Time.deltaTime;
@@ -63,26 +82,7 @@ public class Player : MonoBehaviour
 
         delta = 0;
     }
-
-    private void Boom()
-    {
-        if (!Input.GetButton("Fire2"))
-            return;
-        
-        if (isBoom)
-            return;
-        
-        if (boom < -0)
-        {
-            return;
-        }
-        
-        isBoom = true;
-        this.boom--;
-        onBoom();
-
-    }
-
+    
     private void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");   //-1, 0, 1
@@ -136,13 +136,13 @@ public class Player : MonoBehaviour
             switch (item.itemType)
             {
                 case Item.ItemType.Boom:
-                    Debug.Log("폭탄맞음");
                     boom++;
                     if (boom >= Max_BOOM)
                     {
                         boom = Max_BOOM;
                         GameManager.Instance.score += 500;
                     }
+                    onGetBoomItem();
                     break;
                 
                 case Item.ItemType.Coin:
