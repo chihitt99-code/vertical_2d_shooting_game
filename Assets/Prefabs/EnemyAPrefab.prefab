@@ -137,9 +137,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceeab92e89c665b41a59dfdfd70e1662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyType: 0
   speed: 1
   health: 3
   sprites:
   - {fileID: 8414478535512612329, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: 4326287474489854147, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   spriteRenderer: {fileID: 2280869449579471484}
+  enemyBulletPrefab: {fileID: 1975994493066956652, guid: 945afb3051c436246a75359b3b3b9380, type: 3}

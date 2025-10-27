@@ -154,4 +154,4 @@ MonoBehaviour:
   - {fileID: -8421458170528590454, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   - {fileID: 3714015224569861163, guid: 138040323294fd440a3a823e5d70ad01, type: 3}
   spriteRenderer: {fileID: 7667851160077368019}
-  enemyBulletPrefab: {fileID: 1975994493066956652, guid: 559705ce3321c7343bc8919bcb53fc78, type: 3}
+  enemyBulletPrefab: {fileID: 1975994493066956652, guid: 945afb3051c436246a75359b3b3b9380, type: 3}

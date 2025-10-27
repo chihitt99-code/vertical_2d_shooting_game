@@ -1,34 +1,30 @@
 using System;
 using System.Collections;
-using NUnit.Framework.Constraints;
 using UnityEngine;
-using UnityEngine.Playables;
 
 public class Player : MonoBehaviour
 {
-    public GameObject playerBulletPrefab;
+    public GameObject[] playerBulletPrefabs;
     public Transform firePoint;
     
-    private const int Max_BOOM = 3;
-    private const int Max_POWER = 3;
-    
+    private const int MAX_BOOM = 3;
+    private const int MAX_POWER = 3;
     
     private Animator anim;
     public float speed = 1f;
     public int life = 3;
+    public int boom;
+    public int power = 1;
     private float delta = 0;
     private float span = 0.1f;
-    public int boom;
-    private int power;
     private bool isInvincibility = false;
-   
- 
     
     public Action onResetPosition;
     public Action onGameOver;
     public Action onBoom;
     public Action onGetBoomItem;
-    
+    public Action onHit;
+
     public bool isBoom = false;
     
 
@@ -49,21 +45,22 @@ public class Player : MonoBehaviour
     {
         if (!Input.GetButton("Fire2"))
             return;
-        
-        if (isBoom)
+
+        if(isBoom)
             return;
-        
-        if (boom <=  0)
+
+        if (boom <= 0)
         {
+            Debug.Log("폭탄이 없습니다.");
             return;
         }
-        
+
         isBoom = true;
         this.boom--;
         
         onBoom();
-
     }
+
     private void Reload()
     {
         delta += Time.deltaTime;
@@ -78,11 +75,18 @@ public class Player : MonoBehaviour
             return;
         
         Debug.Log("총알 발사!");
-        GameObject go = Instantiate(playerBulletPrefab, firePoint.position, transform.rotation);
+        GameObject bulletPrefab = GetPlayerBulletPrefab();
+        GameObject go = Instantiate(bulletPrefab, firePoint.position, transform.rotation);
 
         delta = 0;
     }
-    
+
+    public GameObject GetPlayerBulletPrefab()
+    {
+        int index = power - 1;
+        return playerBulletPrefabs[index];
+    }
+
     private void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");   //-1, 0, 1
@@ -112,6 +116,7 @@ public class Player : MonoBehaviour
 
             if (this.life < 0)
             {
+                this.life = 0;
                 Debug.Log("==== GameOver ====");
                 onGameOver();
             }
@@ -120,47 +125,51 @@ public class Player : MonoBehaviour
                 Invoke("ResetPosition", 1f);
             }
 
+            onHit();
             this.gameObject.SetActive(false);
             
             if(other.gameObject.CompareTag("EnemyBullet"))
             {
                 Destroy(other.gameObject);
             }
-            
-            
         }
-        
-        else if(other.gameObject.CompareTag("Item"))
+        else if (other.gameObject.CompareTag("Item"))
         {
             Item item = other.gameObject.GetComponent<Item>();
             switch (item.itemType)
             {
                 case Item.ItemType.Boom:
+                    Debug.Log("폭탄을 획득했다!");
                     boom++;
-                    if (boom >= Max_BOOM)
+                    if (boom >= MAX_BOOM)
                     {
-                        boom = Max_BOOM;
-                        GameManager.Instance.score += 500;
+                        boom = MAX_BOOM;
+                        GameManager.Instance.AddScore(500); 
                     }
+                    
                     onGetBoomItem();
+
                     break;
                 
                 case Item.ItemType.Coin:
-                    GameManager.Instance.score += 1000;
+                    Debug.Log("동전을 획득했다!");
+                    GameManager.Instance.AddScore(1000);
                     break;
                 
                 case Item.ItemType.Power:
+                    Debug.Log("파워를 획득했다!");
                     power++;
-                    if (power >= Max_POWER)
+                    if (power >= MAX_POWER)
                     {
-                        power =Max_POWER;
-                        GameManager.Instance.score += 500;
+                        power = MAX_POWER;
+                        GameManager.Instance.AddScore(500);
                     }
+
                     break;
             }
-                Destroy(item.gameObject);
+            
+            Destroy(item.gameObject);
         }
-        
     }
 
     private void ResetPosition()

@@ -1,24 +1,25 @@
+using System;
 using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    
-    public enum ItemType
+    public enum  ItemType
     {
         Boom,
         Coin,
         Power
     }
+
     public ItemType itemType;
     public float speed = 1f;
-    
-    void Update()
+
+    private void Update()
     {
-        transform.Translate(Vector3.down * Time.deltaTime * speed);
+        transform.Translate(Vector3.down * speed * Time.deltaTime);
 
         if (transform.position.y < -6f)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
     }
 }
