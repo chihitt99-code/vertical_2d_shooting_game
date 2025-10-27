@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     public Action onGetBoomItem;
     public Action onHit;
 
-    public bool isBoom = false;
+    public bool  isBoom = false;
     
 
     private void Start()
@@ -74,10 +74,9 @@ public class Player : MonoBehaviour
         if(delta < span)
             return;
         
-        /*
         Debug.Log("총알 발사!");
-        GameObject bulletPrefab = GetPlayerBulletPrefab();
-        GameObject go = Instantiate(bulletPrefab, firePoint.position, transform.rotation);*/
+        // GameObject bulletPrefab = GetPlayerBulletPrefab();
+        // GameObject go = Instantiate(bulletPrefab, firePoint.position, transform.rotation);
         GameObject go = ObjectPoolManager.Instance.GetPlayerBullet0();
         go.transform.position = firePoint.position;
         go.transform.rotation = firePoint.rotation;

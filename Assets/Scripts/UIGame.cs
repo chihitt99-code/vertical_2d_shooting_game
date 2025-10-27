@@ -28,6 +28,7 @@ public class UIGame : MonoBehaviour
         // lives가 1 일경우는 0 보여준다 
         // lives가 0 일경우는 안보여준다
     }
+    
 
     public void UpdateBoomItemsGo(int booms)
     {
