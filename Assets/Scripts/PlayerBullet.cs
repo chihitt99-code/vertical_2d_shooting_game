@@ -12,6 +12,7 @@ public class PlayerBullet : MonoBehaviour
         {
             //Destroy(gameObject);
             ObjectPoolManager.Instance.ReleasePlayerBullet0Go(this.gameObject);
+            ObjectPoolManager.Instance.ReleasePlayerBullet1Go(this.gameObject);
         }
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -75,11 +76,20 @@ public class Player : MonoBehaviour
             return;
         
         Debug.Log("총알 발사!");
-        // GameObject bulletPrefab = GetPlayerBulletPrefab();
-        // GameObject go = Instantiate(bulletPrefab, firePoint.position, transform.rotation);
-        GameObject go = ObjectPoolManager.Instance.GetPlayerBullet0();
+
+        GameObject go;
+        if (power == 1)
+        {
+            go = ObjectPoolManager.Instance.GetPlayerBullet1();
+        }
+        else
+        {
+            go = ObjectPoolManager.Instance.GetPlayerBullet0();
+        }  
+      
         go.transform.position = firePoint.position;
         go.transform.rotation = firePoint.rotation;
+       
 
         delta = 0;
     }
@@ -162,6 +172,10 @@ public class Player : MonoBehaviour
                 case Item.ItemType.Power:
                     Debug.Log("파워를 획득했다!");
                     power++;
+                    Fire();
+                   
+                    // 파워를 먹으면 총알이 바뀜>???
+                    
                     if (power >= MAX_POWER)
                     {
                         power = MAX_POWER;
