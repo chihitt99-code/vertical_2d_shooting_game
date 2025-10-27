@@ -74,9 +74,13 @@ public class Player : MonoBehaviour
         if(delta < span)
             return;
         
+        /*
         Debug.Log("총알 발사!");
         GameObject bulletPrefab = GetPlayerBulletPrefab();
-        GameObject go = Instantiate(bulletPrefab, firePoint.position, transform.rotation);
+        GameObject go = Instantiate(bulletPrefab, firePoint.position, transform.rotation);*/
+        GameObject go = ObjectPoolManager.Instance.GetPlayerBullet0();
+        go.transform.position = firePoint.position;
+        go.transform.rotation = firePoint.rotation;
 
         delta = 0;
     }

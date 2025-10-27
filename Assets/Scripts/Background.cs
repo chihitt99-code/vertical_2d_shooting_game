@@ -15,7 +15,25 @@ public class Background : MonoBehaviour
 
     void Start()
     {
-       this.viewHeight= Camera.main.orthographicSize *2; 
+       this.viewHeight= Camera.main.orthographicSize *2;
+
+       //(startIndex + 1) % sprites.Length;
+
+       for (int i = 0; i < 10; i++)
+       {
+           int idx = i % 3;
+           Debug.Log(idx);
+
+       }
+
+       int length = 3;
+       for (int i = 0; i < 10; i++)
+       {
+           int idx = (i - 1+length) % length;
+           Debug.Log(idx);
+       }
+       
+       
     }
        
     void Update()
